@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -55,12 +55,19 @@ function App() {
           onChange={(e) => setNewTask(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && addTask()}
         />
-        <button className="add-btn" onClick={addTask}>Add</button>
+        <button className="add-btn" onClick={addTask}>
+          Add
+        </button>
       </div>
 
+    
       <div className="tasks-section">
         <h2>📌 Tasks to do - {tasks.filter((t) => !t.done).length}</h2>
         <ul>
+          {tasks.filter((t) => !t.done).length === 0 && (
+            <p>🎉 All tasks completed!</p>
+          )}
+
           {tasks
             .filter((t) => !t.done)
             .map((task) => (
@@ -73,15 +80,35 @@ function App() {
                       onChange={(e) => setEditingText(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && saveEdit(task.id)}
                     />
-                    <button className="save-btn" onClick={() => saveEdit(task.id)}>Save</button>
-                    <button className="cancel-btn" onClick={() => setEditingId(null)}>Cancel</button>
+                    <button
+                      className="save-btn"
+                      onClick={() => saveEdit(task.id)}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setEditingId(null)}
+                    >
+                      Cancel
+                    </button>
                   </div>
                 ) : (
                   <div className="task-row">
                     <span onClick={() => toggleTask(task.id)}>{task.text}</span>
                     <div className="actions">
-                      <button className="edit-btn" onClick={() => startEditing(task.id, task.text)}>Edit</button>
-                      <button className="delete-btn" onClick={() => deleteTask(task.id)}>Delete</button>
+                      <button
+                        className="edit-btn"
+                        onClick={() => startEditing(task.id, task.text)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => deleteTask(task.id)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 )}
@@ -105,15 +132,35 @@ function App() {
                       onChange={(e) => setEditingText(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && saveEdit(task.id)}
                     />
-                    <button className="save-btn" onClick={() => saveEdit(task.id)}>Save</button>
-                    <button className="cancel-btn" onClick={() => setEditingId(null)}>Cancel</button>
+                    <button
+                      className="save-btn"
+                      onClick={() => saveEdit(task.id)}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setEditingId(null)}
+                    >
+                      Cancel
+                    </button>
                   </div>
                 ) : (
                   <div className="task-row">
                     <span onClick={() => toggleTask(task.id)}>{task.text}</span>
                     <div className="actions">
-                      <button className="edit-btn" onClick={() => startEditing(task.id, task.text)}>Edit</button>
-                      <button className="delete-btn" onClick={() => deleteTask(task.id)}>Delete</button>
+                      <button
+                        className="edit-btn"
+                        onClick={() => startEditing(task.id, task.text)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => deleteTask(task.id)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 )}
