@@ -1,6 +1,6 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: grey;
+  background: #484748;
   margin: 0;
   height: 100%;
   display: flex;
@@ -12,7 +12,7 @@ body {
 .app {
   max-width: 600px;
   width: 100%;
-  background: black;
+  background: #E9E3E6;
   padding: 25px 35px;
   border-radius: 16px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.1);

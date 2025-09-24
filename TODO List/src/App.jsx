@@ -5,11 +5,24 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingId, setEditingId] = useState(null);
-  const [editingText, setEditingText] = useState("");
 
-  const addTask = () => {
+  // Add or Update Task
+  const handleSave = () => {
     if (newTask.trim() === "") return;
-    setTasks([...tasks, { id: Date.now(), text: newTask, done: false }]);
+
+    if (editingId) {
+      // Update existing task
+      setTasks(
+        tasks.map((task) =>
+          task.id === editingId ? { ...task, text: newTask } : task
+        )
+      );
+      setEditingId(null);
+    } else {
+      // Add new task
+      setTasks([...tasks, { id: Date.now(), text: newTask, done: false }]);
+    }
+
     setNewTask("");
   };
 
@@ -29,18 +42,7 @@ function App() {
 
   const startEditing = (id, text) => {
     setEditingId(id);
-    setEditingText(text);
-  };
-
-  const saveEdit = (id) => {
-    if (editingText.trim() === "") return;
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, text: editingText } : task
-      )
-    );
-    setEditingId(null);
-    setEditingText("");
+    setNewTask(text); // put task text into input field
   };
 
   return (
@@ -53,65 +55,46 @@ function App() {
           placeholder="Add a new task..."
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && addTask()}
+          onKeyDown={(e) => e.key === "Enter" && handleSave()}
         />
-        <button className="add-btn" onClick={addTask}>
-          Add
+        <button className="add-btn" onClick={handleSave}>
+          {editingId ? "Update" : "Add"}
         </button>
       </div>
 
-    
       <div className="tasks-section">
         <h2>📌 Tasks to do - {tasks.filter((t) => !t.done).length}</h2>
         <ul>
           {tasks.filter((t) => !t.done).length === 0 && (
-            <p>🎉 All tasks completed!</p>
+            <p>Enter a Task!</p>
           )}
 
           {tasks
             .filter((t) => !t.done)
             .map((task) => (
               <li key={task.id}>
-                {editingId === task.id ? (
-                  <div className="edit-mode">
-                    <input
-                      type="text"
-                      value={editingText}
-                      onChange={(e) => setEditingText(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && saveEdit(task.id)}
-                    />
+                <div className="task-row">
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    onChange={() => toggleTask(task.id)}
+                  />
+                  <span>{task.text}</span>
+                  <div className="actions">
                     <button
-                      className="save-btn"
-                      onClick={() => saveEdit(task.id)}
+                      className="edit-btn"
+                      onClick={() => startEditing(task.id, task.text)}
                     >
-                      Save
+                      Edit
                     </button>
                     <button
-                      className="cancel-btn"
-                      onClick={() => setEditingId(null)}
+                      className="delete-btn"
+                      onClick={() => deleteTask(task.id)}
                     >
-                      Cancel
+                      Delete
                     </button>
                   </div>
-                ) : (
-                  <div className="task-row">
-                    <span onClick={() => toggleTask(task.id)}>{task.text}</span>
-                    <div className="actions">
-                      <button
-                        className="edit-btn"
-                        onClick={() => startEditing(task.id, task.text)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="delete-btn"
-                        onClick={() => deleteTask(task.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                )}
+                </div>
               </li>
             ))}
         </ul>
@@ -124,46 +107,28 @@ function App() {
             .filter((t) => t.done)
             .map((task) => (
               <li key={task.id} className="done">
-                {editingId === task.id ? (
-                  <div className="edit-mode">
-                    <input
-                      type="text"
-                      value={editingText}
-                      onChange={(e) => setEditingText(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && saveEdit(task.id)}
-                    />
+                <div className="task-row">
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    onChange={() => toggleTask(task.id)}
+                  />
+                  <span>{task.text}</span>
+                  <div className="actions">
                     <button
-                      className="save-btn"
-                      onClick={() => saveEdit(task.id)}
+                      className="edit-btn"
+                      onClick={() => startEditing(task.id, task.text)}
                     >
-                      Save
+                      Edit
                     </button>
                     <button
-                      className="cancel-btn"
-                      onClick={() => setEditingId(null)}
+                      className="delete-btn"
+                      onClick={() => deleteTask(task.id)}
                     >
-                      Cancel
+                      Delete
                     </button>
                   </div>
-                ) : (
-                  <div className="task-row">
-                    <span onClick={() => toggleTask(task.id)}>{task.text}</span>
-                    <div className="actions">
-                      <button
-                        className="edit-btn"
-                        onClick={() => startEditing(task.id, task.text)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="delete-btn"
-                        onClick={() => deleteTask(task.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                )}
+                </div>
               </li>
             ))}
         </ul>
